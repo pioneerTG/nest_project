@@ -19,7 +19,7 @@ import { CommentModule } from './comment/comment.module';
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'docker_nest-db-1',
+      host: '1701077_nest-db-1',
       port: 3306,
       username: '1701077',
       password: '1701077',

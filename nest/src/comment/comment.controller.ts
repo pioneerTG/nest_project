@@ -1,5 +1,3 @@
-// comment.controller.ts
-
 import {
   Controller,
   Post,
