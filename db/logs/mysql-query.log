@@ -1,0 +1,460 @@
+/usr/sbin/mysqld, Version: 8.0.34 (MySQL Community Server - GPL). started with:
+Tcp port: 3306  Unix socket: /var/run/mysqld/mysqld.sock
+Time                 Id Command    Argument
+2023-12-13T15:35:06.785868+09:00	    0 Execute	CREATE TABLE performance_schema.innodb_redo_log_files(
+`FILE_ID` BIGINT NOT NULL COMMENT 'Id of the file.',
+`FILE_NAME` VARCHAR(2000) NOT NULL COMMENT 'Path to the file.',
+`START_LSN` BIGINT NOT NULL COMMENT 'LSN of the first block in the file.',
+`END_LSN` BIGINT NOT NULL COMMENT 'LSN after the last block in the file.',
+`SIZE_IN_BYTES` BIGINT NOT NULL COMMENT 'Size of the file (in bytes).',
+`IS_FULL` TINYINT NOT NULL COMMENT '1 iff file has no free space inside.',
+`CONSUMER_LEVEL` INT NOT NULL COMMENT 'All redo log consumers registered on smaller levels than this value, have already consumed this file.'
+)engine = 'performance_schema'
+2023-12-13T15:36:38.552609+09:00	    8 Connect	1701077@172.18.0.3 on nest using TCP/IP
+2023-12-13T15:36:38.554036+09:00	    8 Query	SELECT VERSION() AS `version`
+2023-12-13T15:36:38.562311+09:00	    8 Query	START TRANSACTION
+2023-12-13T15:36:38.564483+09:00	    8 Query	SELECT DATABASE() AS `db_name`
+2023-12-13T15:36:38.565432+09:00	    8 Query	SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'nest' AND `TABLE_NAME` = 'Comment' UNION SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'nest' AND `TABLE_NAME` = 'Board' UNION SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'nest' AND `TABLE_NAME` = 'User'
+2023-12-13T15:36:38.569820+09:00	    8 Query	SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'nest'
+                    AND
+                    `TABLE_NAME` = 'Comment'
+                 UNION 
+                SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'nest'
+                    AND
+                    `TABLE_NAME` = 'Board'
+                 UNION 
+                SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'nest'
+                    AND
+                    `TABLE_NAME` = 'User'
+2023-12-13T15:36:38.573899+09:00	    8 Query	SELECT * FROM (
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'nest'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'Comment'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'nest'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'Board'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'nest'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'User'
+            ) `kcu` WHERE `CONSTRAINT_NAME` = 'PRIMARY'
+2023-12-13T15:36:38.575953+09:00	    8 Query	SELECT
+                `SCHEMA_NAME`,
+                `DEFAULT_CHARACTER_SET_NAME` as `CHARSET`,
+                `DEFAULT_COLLATION_NAME` AS `COLLATION`
+            FROM `INFORMATION_SCHEMA`.`SCHEMATA`
+2023-12-13T15:36:38.577130+09:00	    8 Query	SELECT
+                `s`.*
+            FROM (
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'nest'
+                    AND
+                    `TABLE_NAME` = 'Comment'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'nest'
+                    AND
+                    `TABLE_NAME` = 'Board'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'nest'
+                    AND
+                    `TABLE_NAME` = 'User'
+            ) `s`
+            LEFT JOIN (
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'nest'
+                    AND
+                    `TABLE_NAME` = 'Comment'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'nest'
+                    AND
+                    `TABLE_NAME` = 'Board'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'nest'
+                    AND
+                    `TABLE_NAME` = 'User'
+            ) `rc`
+                ON
+                    `s`.`INDEX_NAME` = `rc`.`CONSTRAINT_NAME`
+                    AND
+                    `s`.`TABLE_SCHEMA` = `rc`.`CONSTRAINT_SCHEMA`
+            WHERE
+                `s`.`INDEX_NAME` != 'PRIMARY'
+                AND
+                `rc`.`CONSTRAINT_NAME` IS NULL
+2023-12-13T15:36:38.580994+09:00	    8 Query	SELECT
+                `kcu`.`TABLE_SCHEMA`,
+                `kcu`.`TABLE_NAME`,
+                `kcu`.`CONSTRAINT_NAME`,
+                `kcu`.`COLUMN_NAME`,
+                `kcu`.`REFERENCED_TABLE_SCHEMA`,
+                `kcu`.`REFERENCED_TABLE_NAME`,
+                `kcu`.`REFERENCED_COLUMN_NAME`,
+                `rc`.`DELETE_RULE` `ON_DELETE`,
+                `rc`.`UPDATE_RULE` `ON_UPDATE`
+            FROM (
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'nest'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'Comment'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'nest'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'Board'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'nest'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'User'
+            ) `kcu`
+            INNER JOIN (
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'nest'
+                    AND
+                    `TABLE_NAME` = 'Comment'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'nest'
+                    AND
+                    `TABLE_NAME` = 'Board'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'nest'
+                    AND
+                    `TABLE_NAME` = 'User'
+            ) `rc`
+                ON
+                    `rc`.`CONSTRAINT_SCHEMA` = `kcu`.`CONSTRAINT_SCHEMA`
+                    AND
+                    `rc`.`TABLE_NAME` = `kcu`.`TABLE_NAME`
+                    AND
+                    `rc`.`CONSTRAINT_NAME` = `kcu`.`CONSTRAINT_NAME`
+2023-12-13T15:36:38.582945+09:00	    8 Query	SELECT VERSION() AS `version`
+2023-12-13T15:36:38.585742+09:00	    8 Query	SELECT * FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA` = 'nest' AND `TABLE_NAME` = 'typeorm_metadata'
+2023-12-13T15:36:38.588814+09:00	    8 Query	COMMIT
+2023-12-13T15:36:39.174007+09:00	    8 Query	SELECT `UserEntity`.`id` AS `UserEntity_id`, `UserEntity`.`name` AS `UserEntity_name`, `UserEntity`.`email` AS `UserEntity_email`, `UserEntity`.`password` AS `UserEntity_password`, `UserEntity`.`createdAt` AS `UserEntity_createdAt`, `UserEntity`.`updatedAt` AS `UserEntity_updatedAt` FROM `User` `UserEntity` WHERE (`UserEntity`.`email` = 'jit_wd@gmail.com') LIMIT 1
+2023-12-13T15:36:39.226241+09:00	    8 Query	START TRANSACTION
+2023-12-13T15:36:39.228892+09:00	    8 Query	INSERT INTO `User`(`id`, `name`, `email`, `password`, `createdAt`, `updatedAt`) VALUES (DEFAULT, '박영진', 'jit_wd@gmail.com', '$2b$10$qIhGavBRglxpvzjisBw0DOcj1ZRFVhCfaFGpz9vpMDC2RldshcXLq', DEFAULT, DEFAULT)
+2023-12-13T15:36:39.230228+09:00	    8 Query	SELECT `UserEntity`.`id` AS `UserEntity_id`, `UserEntity`.`createdAt` AS `UserEntity_createdAt`, `UserEntity`.`updatedAt` AS `UserEntity_updatedAt` FROM `User` `UserEntity` WHERE `UserEntity`.`id` = 4
+2023-12-13T15:36:39.232168+09:00	    8 Query	COMMIT
+2023-12-13T15:36:48.529873+09:00	    8 Query	SELECT `UserEntity`.`id` AS `UserEntity_id`, `UserEntity`.`name` AS `UserEntity_name`, `UserEntity`.`email` AS `UserEntity_email`, `UserEntity`.`password` AS `UserEntity_password`, `UserEntity`.`createdAt` AS `UserEntity_createdAt`, `UserEntity`.`updatedAt` AS `UserEntity_updatedAt` FROM `User` `UserEntity` WHERE (`UserEntity`.`email` = 'jit_wd@gmail.com') LIMIT 1
+2023-12-13T15:37:33.171373+09:00	    9 Connect	1701077@172.18.0.3 on nest using TCP/IP
+2023-12-13T15:37:33.172810+09:00	    9 Query	SELECT VERSION() AS `version`
+2023-12-13T15:37:33.181190+09:00	    9 Query	START TRANSACTION
+2023-12-13T15:37:33.182374+09:00	    9 Query	SELECT DATABASE() AS `db_name`
+2023-12-13T15:37:33.183383+09:00	    9 Query	SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'nest' AND `TABLE_NAME` = 'Comment' UNION SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'nest' AND `TABLE_NAME` = 'Board' UNION SELECT `TABLE_SCHEMA`, `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`TABLES` WHERE `TABLE_SCHEMA` = 'nest' AND `TABLE_NAME` = 'User'
+2023-12-13T15:37:33.186177+09:00	    9 Query	SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'nest'
+                    AND
+                    `TABLE_NAME` = 'Comment'
+                 UNION 
+                SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'nest'
+                    AND
+                    `TABLE_NAME` = 'Board'
+                 UNION 
+                SELECT
+                    *
+                FROM
+                    `INFORMATION_SCHEMA`.`COLUMNS`
+                WHERE
+                    `TABLE_SCHEMA` = 'nest'
+                    AND
+                    `TABLE_NAME` = 'User'
+2023-12-13T15:37:33.189787+09:00	    9 Query	SELECT * FROM (
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'nest'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'Comment'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'nest'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'Board'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'nest'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'User'
+            ) `kcu` WHERE `CONSTRAINT_NAME` = 'PRIMARY'
+2023-12-13T15:37:33.192802+09:00	    9 Query	SELECT
+                `SCHEMA_NAME`,
+                `DEFAULT_CHARACTER_SET_NAME` as `CHARSET`,
+                `DEFAULT_COLLATION_NAME` AS `COLLATION`
+            FROM `INFORMATION_SCHEMA`.`SCHEMATA`
+2023-12-13T15:37:33.193839+09:00	    9 Query	SELECT
+                `s`.*
+            FROM (
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'nest'
+                    AND
+                    `TABLE_NAME` = 'Comment'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'nest'
+                    AND
+                    `TABLE_NAME` = 'Board'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`STATISTICS`
+                WHERE
+                    `TABLE_SCHEMA` = 'nest'
+                    AND
+                    `TABLE_NAME` = 'User'
+            ) `s`
+            LEFT JOIN (
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'nest'
+                    AND
+                    `TABLE_NAME` = 'Comment'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'nest'
+                    AND
+                    `TABLE_NAME` = 'Board'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'nest'
+                    AND
+                    `TABLE_NAME` = 'User'
+            ) `rc`
+                ON
+                    `s`.`INDEX_NAME` = `rc`.`CONSTRAINT_NAME`
+                    AND
+                    `s`.`TABLE_SCHEMA` = `rc`.`CONSTRAINT_SCHEMA`
+            WHERE
+                `s`.`INDEX_NAME` != 'PRIMARY'
+                AND
+                `rc`.`CONSTRAINT_NAME` IS NULL
+2023-12-13T15:37:33.197547+09:00	    9 Query	SELECT
+                `kcu`.`TABLE_SCHEMA`,
+                `kcu`.`TABLE_NAME`,
+                `kcu`.`CONSTRAINT_NAME`,
+                `kcu`.`COLUMN_NAME`,
+                `kcu`.`REFERENCED_TABLE_SCHEMA`,
+                `kcu`.`REFERENCED_TABLE_NAME`,
+                `kcu`.`REFERENCED_COLUMN_NAME`,
+                `rc`.`DELETE_RULE` `ON_DELETE`,
+                `rc`.`UPDATE_RULE` `ON_UPDATE`
+            FROM (
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'nest'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'Comment'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'nest'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'Board'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE` `kcu`
+                WHERE
+                    `kcu`.`TABLE_SCHEMA` = 'nest'
+                    AND
+                    `kcu`.`TABLE_NAME` = 'User'
+            ) `kcu`
+            INNER JOIN (
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'nest'
+                    AND
+                    `TABLE_NAME` = 'Comment'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'nest'
+                    AND
+                    `TABLE_NAME` = 'Board'
+             UNION 
+                SELECT
+                    *
+                FROM `INFORMATION_SCHEMA`.`REFERENTIAL_CONSTRAINTS`
+                WHERE
+                    `CONSTRAINT_SCHEMA` = 'nest'
+                    AND
+                    `TABLE_NAME` = 'User'
+            ) `rc`
+                ON
+                    `rc`.`CONSTRAINT_SCHEMA` = `kcu`.`CONSTRAINT_SCHEMA`
+                    AND
+                    `rc`.`TABLE_NAME` = `kcu`.`TABLE_NAME`
+                    AND
+                    `rc`.`CONSTRAINT_NAME` = `kcu`.`CONSTRAINT_NAME`
+2023-12-13T15:37:33.200169+09:00	    9 Query	SELECT VERSION() AS `version`
+2023-12-13T15:37:33.202547+09:00	    9 Query	SELECT * FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA` = 'nest' AND `TABLE_NAME` = 'typeorm_metadata'
+2023-12-13T15:37:33.206993+09:00	    9 Query	COMMIT
+2023-12-13T15:38:07.018438+09:00	   10 Connect	root@localhost on  using Socket
+2023-12-13T15:38:07.018566+09:00	   10 Query	/*!40100 SET @@SQL_MODE='' */
+2023-12-13T15:38:07.018667+09:00	   10 Query	/*!40103 SET TIME_ZONE='+00:00' */
+2023-12-13T15:38:07.018784+09:00	   10 Query	/*!80000 SET SESSION information_schema_stats_expiry=0 */
+2023-12-13T15:38:07.018880+09:00	   10 Query	SET SESSION NET_READ_TIMEOUT= 86400, SESSION NET_WRITE_TIMEOUT= 86400
+2023-12-13T15:38:07.019398+09:00	   10 Query	SHOW VARIABLES LIKE 'gtid_mode'
+2023-12-13T15:38:07.022231+09:00	   10 Query	SELECT LOGFILE_GROUP_NAME, FILE_NAME, TOTAL_EXTENTS, INITIAL_SIZE, ENGINE, EXTRA FROM INFORMATION_SCHEMA.FILES WHERE ENGINE = 'ndbcluster' AND FILE_TYPE = 'UNDO LOG' AND FILE_NAME IS NOT NULL AND LOGFILE_GROUP_NAME IS NOT NULL AND LOGFILE_GROUP_NAME IN (SELECT DISTINCT LOGFILE_GROUP_NAME FROM INFORMATION_SCHEMA.FILES WHERE ENGINE = 'ndbcluster' AND FILE_TYPE = 'DATAFILE' AND TABLESPACE_NAME IN (SELECT DISTINCT TABLESPACE_NAME FROM INFORMATION_SCHEMA.PARTITIONS WHERE TABLE_SCHEMA IN ('nest'))) GROUP BY LOGFILE_GROUP_NAME, FILE_NAME, ENGINE, TOTAL_EXTENTS, INITIAL_SIZE ORDER BY LOGFILE_GROUP_NAME
+2023-12-13T15:38:07.023692+09:00	   10 Query	SELECT DISTINCT TABLESPACE_NAME, FILE_NAME, LOGFILE_GROUP_NAME, EXTENT_SIZE, INITIAL_SIZE, ENGINE FROM INFORMATION_SCHEMA.FILES WHERE FILE_TYPE = 'DATAFILE' AND TABLESPACE_NAME IN (SELECT DISTINCT TABLESPACE_NAME FROM INFORMATION_SCHEMA.PARTITIONS WHERE TABLE_SCHEMA IN ('nest')) ORDER BY TABLESPACE_NAME, LOGFILE_GROUP_NAME
+2023-12-13T15:38:07.024343+09:00	   10 Query	SHOW VARIABLES LIKE 'ndbinfo\_version'
+2023-12-13T15:38:07.025203+09:00	   10 Init DB	nest
+2023-12-13T15:38:07.025304+09:00	   10 Query	show tables
+2023-12-13T15:38:07.025900+09:00	   10 Query	LOCK TABLES `Board` READ /*!32311 LOCAL */,`Comment` READ /*!32311 LOCAL */,`User` READ /*!32311 LOCAL */
+2023-12-13T15:38:07.026371+09:00	   10 Query	show table status like 'Board'
+2023-12-13T15:38:07.027062+09:00	   10 Query	SET SQL_QUOTE_SHOW_CREATE=1
+2023-12-13T15:38:07.027158+09:00	   10 Query	SET SESSION character_set_results = 'binary'
+2023-12-13T15:38:07.027258+09:00	   10 Query	show create table `Board`
+2023-12-13T15:38:07.027470+09:00	   10 Query	SET SESSION character_set_results = 'utf8mb4'
+2023-12-13T15:38:07.027588+09:00	   10 Query	show fields from `Board`
+2023-12-13T15:38:07.028176+09:00	   10 Query	show fields from `Board`
+2023-12-13T15:38:07.028687+09:00	   10 Query	SELECT /*!40001 SQL_NO_CACHE */ * FROM `Board`
+2023-12-13T15:38:07.029382+09:00	   10 Query	SET SESSION character_set_results = 'binary'
+2023-12-13T15:38:07.029478+09:00	   10 Query	use `nest`
+2023-12-13T15:38:07.029591+09:00	   10 Query	select @@collation_database
+2023-12-13T15:38:07.029707+09:00	   10 Query	SHOW TRIGGERS LIKE 'Board'
+2023-12-13T15:38:07.030401+09:00	   10 Query	SET SESSION character_set_results = 'utf8mb4'
+2023-12-13T15:38:07.030507+09:00	   10 Query	SET SESSION character_set_results = 'binary'
+2023-12-13T15:38:07.030616+09:00	   10 Query	SELECT COLUMN_NAME,                       JSON_EXTRACT(HISTOGRAM, '$."number-of-buckets-specified"')                FROM information_schema.COLUMN_STATISTICS                WHERE SCHEMA_NAME = 'nest' AND TABLE_NAME = 'Board'
+2023-12-13T15:38:07.030970+09:00	   10 Query	SET SESSION character_set_results = 'utf8mb4'
+2023-12-13T15:38:07.031090+09:00	   10 Query	show table status like 'Comment'
+2023-12-13T15:38:07.031622+09:00	   10 Query	SET SQL_QUOTE_SHOW_CREATE=1
+2023-12-13T15:38:07.031714+09:00	   10 Query	SET SESSION character_set_results = 'binary'
+2023-12-13T15:38:07.031812+09:00	   10 Query	show create table `Comment`
+2023-12-13T15:38:07.031998+09:00	   10 Query	SET SESSION character_set_results = 'utf8mb4'
+2023-12-13T15:38:07.032103+09:00	   10 Query	show fields from `Comment`
+2023-12-13T15:38:07.032552+09:00	   10 Query	show fields from `Comment`
+2023-12-13T15:38:07.033033+09:00	   10 Query	SELECT /*!40001 SQL_NO_CACHE */ * FROM `Comment`
+2023-12-13T15:38:07.033643+09:00	   10 Query	SET SESSION character_set_results = 'binary'
+2023-12-13T15:38:07.033730+09:00	   10 Query	use `nest`
+2023-12-13T15:38:07.033804+09:00	   10 Query	select @@collation_database
+2023-12-13T15:38:07.033904+09:00	   10 Query	SHOW TRIGGERS LIKE 'Comment'
+2023-12-13T15:38:07.034255+09:00	   10 Query	SET SESSION character_set_results = 'utf8mb4'
+2023-12-13T15:38:07.034356+09:00	   10 Query	SET SESSION character_set_results = 'binary'
+2023-12-13T15:38:07.034438+09:00	   10 Query	SELECT COLUMN_NAME,                       JSON_EXTRACT(HISTOGRAM, '$."number-of-buckets-specified"')                FROM information_schema.COLUMN_STATISTICS                WHERE SCHEMA_NAME = 'nest' AND TABLE_NAME = 'Comment'
+2023-12-13T15:38:07.034601+09:00	   10 Query	SET SESSION character_set_results = 'utf8mb4'
+2023-12-13T15:38:07.034683+09:00	   10 Query	show table status like 'User'
+2023-12-13T15:38:07.035191+09:00	   10 Query	SET SQL_QUOTE_SHOW_CREATE=1
+2023-12-13T15:38:07.035318+09:00	   10 Query	SET SESSION character_set_results = 'binary'
+2023-12-13T15:38:07.035399+09:00	   10 Query	show create table `User`
+2023-12-13T15:38:07.035548+09:00	   10 Query	SET SESSION character_set_results = 'utf8mb4'
+2023-12-13T15:38:07.035640+09:00	   10 Query	show fields from `User`
+2023-12-13T15:38:07.036117+09:00	   10 Query	show fields from `User`
+2023-12-13T15:38:07.036602+09:00	   10 Query	SELECT /*!40001 SQL_NO_CACHE */ * FROM `User`
+2023-12-13T15:38:07.036743+09:00	   10 Query	SET SESSION character_set_results = 'binary'
+2023-12-13T15:38:07.036827+09:00	   10 Query	use `nest`
+2023-12-13T15:38:07.036911+09:00	   10 Query	select @@collation_database
+2023-12-13T15:38:07.036996+09:00	   10 Query	SHOW TRIGGERS LIKE 'User'
+2023-12-13T15:38:07.037330+09:00	   10 Query	SET SESSION character_set_results = 'utf8mb4'
+2023-12-13T15:38:07.037427+09:00	   10 Query	SET SESSION character_set_results = 'binary'
+2023-12-13T15:38:07.037523+09:00	   10 Query	SELECT COLUMN_NAME,                       JSON_EXTRACT(HISTOGRAM, '$."number-of-buckets-specified"')                FROM information_schema.COLUMN_STATISTICS                WHERE SCHEMA_NAME = 'nest' AND TABLE_NAME = 'User'
+2023-12-13T15:38:07.037675+09:00	   10 Query	SET SESSION character_set_results = 'utf8mb4'
+2023-12-13T15:38:07.037756+09:00	   10 Query	UNLOCK TABLES
+2023-12-13T15:38:07.039171+09:00	   10 Quit	
