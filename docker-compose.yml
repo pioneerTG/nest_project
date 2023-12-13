@@ -1,0 +1,65 @@
+version: '3'
+services:
+    db:
+        image: mysql:8.0.34
+        environment:
+            - MYSQL_ROOT_HOST=${DB_ROOT_HOST}
+            - MYSQL_DATABASE=${DB_NAME}
+            - MYSQL_USER=${DB_USER}
+            - MYSQL_PASSWORD=${DB_PASS}
+            - MYSQL_ROOT_PASSWORD=${DB_PASS}
+            - TZ=${TZ}
+        ports:
+            - '3306:3306'
+        volumes:
+            - ./db/conf:/etc/mysql/conf.d/:ro
+            - mysqldata:/var/lib/mysql
+            - ./db/logs:/var/log/mysql
+            - ./db/dump:/var/lib/mysql-files
+        networks:
+            - docker_server
+
+    nest:
+        image: node:lts
+        environment:
+            - MYSQL_SERVER=db
+            - MYSQL_USER=${DB_USER}
+            - MYSQL_PASSWORD=${DB_PASS}
+            - MYSQL_DATABASE=${DB_NAME}
+            - TZ=${TZ}
+            - CHOKIDAR_USEPOLLING=true
+        tty: true
+
+        ports:
+            - '3001:3001'
+        volumes:
+            - ./nest:/app
+        working_dir: /app
+        command: npm run start:dev
+
+        networks:
+            - docker_server
+        depends_on:
+            - db
+
+    react:
+        image: node:lts
+        environment:
+            - CHOKIDAR_USEPOLLING=true
+        tty: true
+        ports:
+            - '3000:3000'
+        volumes:
+            - ./react:/app
+        working_dir: /app
+        command: npm run start
+        networks:
+            - docker_server
+        depends_on:
+            - nest
+
+networks:
+    docker_server:
+
+volumes:
+    mysqldata:
