@@ -35,7 +35,7 @@ services:
         volumes:
             - ./nest:/app
         working_dir: /app
-        command: bash -c "npm i && npm run start:dev"
+        command: sh -c "npm i && npm run start:dev"
 
         networks:
             - docker_server
@@ -52,7 +52,7 @@ services:
         volumes:
             - ./react:/app
         working_dir: /app
-        command: bash -c "npm i && npm run start"
+        command: sh -c "npm i && npm run start"
         networks:
             - docker_server
         depends_on:
