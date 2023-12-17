@@ -9,7 +9,8 @@ function WritePost() {
     const Token = Cookies.get('Token');
     const [userName, setUserName] = useState<string | null>('');
     const [title, setTitle] = useState('');
-    const [content, setContent] = useState<File | null>(null);
+    const [content, setContent] = useState('');
+    const [image, setImage] = useState<File | null>(null);
 
     useEffect(() => {
         if (Token) {
@@ -28,15 +29,15 @@ function WritePost() {
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedImage = e.target.files?.[0];
         if (selectedImage) {
-            setContent(selectedImage);
+            setImage(selectedImage);
         }
     };
 
     const handleWritePost = async () => {
         try {
             const formData = new FormData();
-            if (content) {
-                formData.append('content', content);
+            if (image) {
+                formData.append('image', image);
             }
             const imageResponse = await axios.post('http://localhost:3001/board/upload', formData, {
                 headers: {
@@ -44,10 +45,13 @@ function WritePost() {
                 },
             });
 
+            console.log('imageResponse.data:', imageResponse.data.image); // 추가된 로깅 코드
+
             await axios.post('http://localhost:3001/board/write', {
                 userName,
                 title,
-                content: imageResponse.data.content,
+                image: imageResponse.data.image,
+                content,
             });
 
             navigate('/board');
@@ -58,17 +62,17 @@ function WritePost() {
 
     return (
         <div className="max-w-md mx-auto mt-8">
-            <h2 className="text-3xl font-bold mb-4">Create Board</h2>
+            <h2 className="text-3xl font-bold mb-4">게시글 작성</h2>
 
             <div className="mb-4">
                 <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-                    Title
+                    제목
                 </label>
                 <input
                     type="text"
                     id="title"
                     name="title"
-                    placeholder="Enter the title"
+                    placeholder="제목을 입력하세요."
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     className="mt-1 p-2 border border-gray-300 w-full rounded focus:outline-none focus:ring focus:border-blue-300"
@@ -77,7 +81,7 @@ function WritePost() {
 
             <div className="mb-4">
                 <label htmlFor="image" className="block text-sm font-medium text-gray-700">
-                    Image
+                    이미지 첨부
                 </label>
                 <input
                     type="file"
@@ -85,6 +89,19 @@ function WritePost() {
                     name="image"
                     accept="image/*"
                     onChange={handleImageChange}
+                    className="mt-1 p-2 border border-gray-300 w-full rounded focus:outline-none focus:ring focus:border-blue-300"
+                />
+            </div>
+
+            <div className="mb-4">
+                <label htmlFor="content" className="block text-sm font-medium text-gray-700">
+                    본문 내용
+                </label>
+                <textarea
+                    id="content"
+                    name="content"
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
                     className="mt-1 p-2 border border-gray-300 w-full rounded focus:outline-none focus:ring focus:border-blue-300"
                 />
             </div>

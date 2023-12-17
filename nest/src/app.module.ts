@@ -19,10 +19,10 @@ import { CommentModule } from './comment/comment.module';
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: '1701077_nest-db-1',
+      host: 'nest_project-db-1',
       port: 3306,
-      username: '1701077',
-      password: '1701077',
+      username: 'ptg',
+      password: 'ptg1234',
       database: 'nest',
       entities: [UserEntity, BoardEntity, CommentEntity],
       synchronize: true,

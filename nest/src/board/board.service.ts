@@ -14,11 +14,12 @@ export class BoardService {
 
   async create(ceateBoardDto: CreateBoardDto) {
     console.log('생성');
-    const { userName, title, content } = ceateBoardDto;
+    const { userName, title, content, image } = ceateBoardDto;
     console.log('저장');
     await this.boardRepository.save({
       userName,
       title,
+      image,
       content,
     });
     console.log('저장 완료');
@@ -39,11 +40,12 @@ export class BoardService {
   }
 
   async update(id: number, updateBoardDto: UpdateBoardDto) {
-    const { userName, title, content } = updateBoardDto;
+    const { userName, title, image, content } = updateBoardDto;
 
     await this.boardRepository.update(id, {
       userName,
       title,
+      image,
       content,
     });
   }

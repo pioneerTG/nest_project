@@ -22,6 +22,9 @@ export class BoardEntity {
   title: string;
 
   @Column({ nullable: true })
+  image: string;
+
+  @Column({ nullable: true })
   content: string;
 
   @ManyToOne(() => UserEntity, (user) => user.boards)

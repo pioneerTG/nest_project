@@ -11,5 +11,8 @@ export class CreateBoardDto {
   readonly title: string;
 
   @IsString()
+  readonly image: string;
+
+  @IsString()
   readonly content: string;
 }

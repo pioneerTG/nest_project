@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -45,15 +37,13 @@ export class UserController {
   }
 
   @Post('signup')
-  async signUp(@Body() body: any): Promise<any> {
-    const { name, email, password } = body;
+  async signUp(@Body() { name, email, password }: any): Promise<any> {
     const token = await this.authService.signUp(name, email, password);
     return { token };
   }
 
   @Post('login')
-  async login(@Body() body: any): Promise<any> {
-    const { email, password } = body;
+  async login(@Body() { email, password }: any): Promise<any> {
     const token = await this.authService.login(email, password);
     return { token };
   }
